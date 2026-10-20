@@ -1,0 +1,77 @@
+export type Ability = "divine" | "agni" | "vajra" | "volley";
+export const CONFIG = {
+  world: { width: 1672, height: 941 },
+  round: {
+    seconds: 90,
+    arrows: 10,
+    heads: 10,
+    maxStored: 1,
+    maxShots: 1,
+    maxProjectiles: 3,
+  },
+  physics: {
+    gravity: 0.9,
+    step: 1000 / 120,
+    settle: 1200,
+    resolve: 6500,
+    minimumResolve: 1700,
+    expiryGrace: 4000,
+  },
+  aim: {
+    x: 356,
+    y: 520,
+    maxPull: 150,
+    minPull: 14,
+    minSpeed: 9,
+    maxSpeed: 27,
+    hitRadius: 180,
+  },
+  damage: { head: 2.8, wood: 5.3, crate: 7, stone: 30, minVelocity: 1.8 },
+  materials: {
+    wood: { density: 0.0014, friction: 0.7, restitution: 0.02 },
+    stone: { density: 0.004, friction: 0.75, restitution: 0.01 },
+    crate: { density: 0.002, friction: 0.65, restitution: 0.02 },
+    head: { density: 0.001, friction: 0.7, restitution: 0.02 },
+  },
+  weapons: {
+    divine: { damage: 1, color: 0xffd54b, penetration: 0, radius: 0 },
+    agni: { damage: 1.7, color: 0xff6b20, penetration: 0, radius: 125 },
+    vajra: { damage: 2.4, color: 0x63e7ff, penetration: 3, radius: 0 },
+    volley: { damage: 1, color: 0xffdf62, penetration: 0, radius: 0 },
+  },
+  volleySpread: 0.065,
+  score: {
+    head: 500,
+    wood: 50,
+    stone: 100,
+    crate: 100,
+    combo: 250,
+    second: 10,
+    arrow: 200,
+  },
+  stars: [5000, 6500, 8000],
+  camera: { portraitZoom: 0.78, follow: 0.045 },
+} as const;
+export const ASSET_BASE = "/assets/game/";
+export const SPRITES: Record<string, string> = {
+  background: "environment/background",
+  rama: "characters/rama",
+  arrow: "weapons/arrow-standard",
+  bow: "weapons/bow",
+  wood: "structures/wood-long",
+  column: "structures/wood-column",
+  short: "structures/wood-short",
+  stone: "structures/stone-square",
+  stoneWide: "structures/stone-wide",
+  crate: "structures/crate",
+  agni: "powerups/agni",
+  vajra: "powerups/vajra",
+  volley: "powerups/volley",
+  banner: "decorations/banner",
+  ...Object.fromEntries(
+    Array.from({ length: 10 }, (_, i) => [
+      "head" + i,
+      `characters/ravana-heads/${String(i + 1).padStart(2, "0")}`,
+    ]),
+  ),
+};

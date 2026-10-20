@@ -1,0 +1,24 @@
+{
+  "name": "vijay-baan",
+  "version": "1.0.0",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "dev": "vite --host 127.0.0.1",
+    "build": "tsc --noEmit && vite build",
+    "test": "node --import tsx --test tests/*.test.ts",
+    "physics": "node --import tsx scripts/physics-test.ts && node --import tsx scripts/check-replays.ts",
+    "format:check": "prettier --check src tests scripts/*.ts index.html package.json tsconfig.json"
+  },
+  "dependencies": {
+    "matter-js": "^0.20.0",
+    "phaser": "^3.90.0"
+  },
+  "devDependencies": {
+    "@types/matter-js": "^0.20.2",
+    "prettier": "^3.9.10",
+    "tsx": "^4.20.6",
+    "typescript": "^5.9.3",
+    "vite": "^7.1.7"
+  }
+}
