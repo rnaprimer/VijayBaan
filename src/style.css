@@ -1360,3 +1360,39 @@ button:disabled {
     margin-bottom: 12px;
   }
 }
+
+.result-support {
+  grid-column: 1 / -1;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-wrap: wrap;
+  gap: 5px 15px;
+  border-top: 1px solid #e3cdab;
+  padding-top: 10px;
+  font-size: 11px;
+  color: #8b7455;
+}
+.result-support a {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 7px;
+  min-height: 44px;
+  padding: 8px 15px;
+  border: 1px solid #e4c56c;
+  border-radius: 7px;
+  background: #ffdf79;
+  color: #614121;
+  text-decoration: none;
+  font-weight: 700;
+}
+.result-support a:hover {
+  background: #f7cd55;
+}
+@media (max-width: 600px) and (orientation: portrait) {
+  .result-support {
+    margin-top: 14px;
+    font-size: 10px;
+  }
+}
