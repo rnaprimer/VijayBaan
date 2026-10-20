@@ -9,7 +9,7 @@ document.querySelector<HTMLDivElement>("#app")!.innerHTML = `
 <header class="masthead"><a class="brand" href="./" aria-label="Vijay Baan home"><span class="brand-icon">➶</span><span>VIJAY BAAN<small>THE DUSSEHRA ARROW CHALLENGE</small></span></a><div class="header-right"><span class="edition">ONE BOW. TEN HEADS. ONE EPIC CHALLENGE.</span><button id="help" class="icon" aria-label="How to play">?</button><button id="sound" class="icon" aria-label="Toggle sound" title="Toggle sound">♪</button></div></header>
 <main><div class="game-topline"><span><i></i> THE BATTLEFIELD</span><span class="top-note">A little aim. A little strategy. A legendary victory.</span></div>
 <section class="arena" aria-label="Vijay Baan game"><div id="game"></div><div id="hud" class="hud hidden"><div class="stats"><div><small>SCORE</small><b id="score">0</b></div><div><small>TIME</small><b id="time">1:30</b></div><div><small>ARROWS</small><b id="arrows">10 <em>➶</em></b></div><div><small>HEADS</small><b id="heads">0 <em>/ 10</em></b></div></div><div class="hud-right"><div class="ability"><span id="ability-icon">➶</span><span><small>YOUR NEXT SHOT</small><b id="ability">Divine Arrow</b></span></div><button id="pause" class="icon" aria-label="Pause game">Ⅱ</button></div></div>
-<div id="message" role="status"></div><div id="aim-hint" class="aim-hint hidden">← Pull back near the bow. Release to shoot.</div><div id="overview" class="overview hidden"><span>RAMA</span><div>● ───────── ◈</div><span>FORTRESS →</span></div>
+<div class="orientation-tip" role="note"><span aria-hidden="true">↻</span> Rotate your phone for the best landscape experience</div><div id="message" role="status"></div><div id="aim-hint" class="aim-hint hidden">← Pull back near the bow. Release to shoot.</div><div id="overview" class="overview hidden"><span>RAMA</span><div>● ───────── ◈</div><span>FORTRESS →</span></div>
 <div id="menu" class="overlay"><div class="welcome"><div class="eyebrow">CELEBRATE THE TRIUMPH OF GOOD</div><div class="title-ornament">✦ ─── 🏹 ─── ✦</div><h1>VIJAY <span>BAAN</span></h1><p class="subtitle">The Dussehra Arrow Challenge</p><div class="cast"><img src="${asset}characters/rama.png" alt="Shri Ram drawing his bow"><span class="versus">GOOD<br><i>vs</i><br>EVIL</span><img src="${asset}characters/ravana-heads/01.png" alt="A crowned Ravana head"></div><p class="intro">Ten heads. One fortress. Your legendary shot.</p><button class="primary" id="play">LET THE ARROWS FLY <span>➶</span></button><p class="menu-instruction">Drag back to aim · Release to shoot · Bring down the fortress</p><div class="best-line">PERSONAL BEST <b id="menu-best">${readBest().score.toLocaleString()}</b></div></div></div>
 <div id="pause-menu" class="overlay hidden"><div class="panel"><div class="eyebrow">TAKE A BREATH, HERO</div><h2>Battle paused</h2><p>Your next legendary shot can wait.</p><button id="resume" class="primary">RESUME BATTLE ➶</button><button id="restart-pause" class="secondary">Restart challenge</button><button id="pause-sound" class="secondary">Toggle sound</button><button id="return-menu" class="text-button">Return to menu</button></div></div>
 <div id="results" class="overlay hidden"><div class="panel result"><div id="result-eyebrow" class="eyebrow"></div><h2 id="result-title"></h2><p id="result-sub"></p><div id="stars" class="stars"></div><div class="final-score" id="final-score"></div><div class="result-stats" id="result-stats"></div><p class="personal" id="personal"></p><button id="again" class="primary">PLAY AGAIN ➶</button><div class="share-row"><button id="share" class="secondary">↗ Share score</button><button id="download" class="secondary">↓ Score card</button></div><button id="copy" class="text-button">Copy result</button><p id="share-status" role="status"></p></div></div>
@@ -90,6 +90,7 @@ scene.hud = () => {
   show("aim-hint", scene.started && r.phase === "READY" && scene.settled);
 };
 scene.onFinish = (r) => {
+  document.body.classList.remove("playing");
   currentResult = r;
   show("aim-hint", false);
   const best = saveBest(r);
@@ -109,6 +110,7 @@ scene.onFinish = (r) => {
   window.setTimeout(() => show("results", true), r.won ? 950 : 250);
 };
 function start() {
+  document.body.classList.add("playing");
   show("menu", false);
   show("hud", true);
   show("overview", true);
@@ -116,6 +118,7 @@ function start() {
   scene.start();
 }
 function restart(toMenu = false) {
+  document.body.classList.toggle("playing", !toMenu);
   show("overview", !toMenu);
   clearTimeout(toastTimer);
   $("message").textContent = "";

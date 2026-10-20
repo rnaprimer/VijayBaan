@@ -21,6 +21,8 @@ npm run build
 
 `npm run build` performs strict TypeScript checking and creates `dist/`. Serve that directory using any static HTTPS hosting provider. The included `.openai/hosting.json` identifies the Sites deployment. The game uses no authentication SDK or backend.
 
+On phones, portrait gameplay displays an on-screen recommendation to rotate to landscape. Mobile landscape fills the available viewport with the battlefield and HUD; the page header, footer, and surrounding instruction text are hidden. The artwork keeps its proportions, and HUD controls respect device safe areas.
+
 ## Rules
 
 90 seconds, 10 arrows, 10 independently simulated target heads, one continuous level. The timer and physics both pause from the pause menu and when the browser tab becomes hidden. Resume explicitly. The last shot and a timed-out shot receive a bounded resolution window.

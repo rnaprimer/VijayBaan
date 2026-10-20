@@ -50,3 +50,7 @@ A robustness probe shifting every angle by ±0.01 radians defeated 6 and 3 targe
 Native phone touch hardware, Android frame-rate/memory profiling, native share-sheet completion, WhatsApp compose behavior, and actual download-file completion have not been verified. The complete camera/physics implementation is exercised through desktop pointer input at mobile dimensions. The shared headless harness reproduces material and collision rules but is not a full browser renderer.
 
 A Site was registered as owner-private, but deployment was not completed. Automatic approval review rejected both the public-audience change and the source/artwork upload to the private Sites repository, pending explicit approval. No hosted-game URL is claimed. The source game has no login and is ready for ordinary public static hosting once upload and publication are authorized.
+
+## Mobile landscape update
+
+Added an in-game portrait rotation recommendation and viewport-filling mobile landscape gameplay. The header, footer, surrounding labels, and bottom aiming hint are hidden in this mode, with safe-area spacing for the HUD. TypeScript/build, formatting, and the 22 existing tests were rerun successfully. Visual verification of this revision remains pending because automatic browser approval review blocked opening the local preview. Earlier browser screenshots document the previous layout.

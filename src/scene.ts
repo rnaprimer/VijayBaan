@@ -179,12 +179,21 @@ export class Battlefield extends Phaser.Scene {
       w = this.scale.width,
       h = this.scale.height;
     const portrait = w / h < 1;
-    const z = portrait ? h / 941 : Math.min(w / 1672, h / 941);
+    const immersiveLandscape = matchMedia(
+      "(orientation: landscape) and (max-height: 600px), (orientation: landscape) and (hover: none) and (pointer: coarse)",
+    ).matches;
+    const fillViewport = portrait || immersiveLandscape;
+    // Fill mobile landscape without stretching the art. Overflow is cropped while preserving the artwork’s proportions.
+    const z = portrait
+      ? h / 941
+      : immersiveLandscape
+        ? Math.max(w / 1672, h / 941)
+        : Math.min(w / 1672, h / 941);
     c.setViewport(
-      portrait ? 0 : (w - 1672 * z) / 2,
-      portrait ? 0 : (h - 941 * z) / 2,
-      portrait ? w : 1672 * z,
-      portrait ? h : 941 * z,
+      fillViewport ? 0 : (w - 1672 * z) / 2,
+      fillViewport ? 0 : (h - 941 * z) / 2,
+      fillViewport ? w : 1672 * z,
+      fillViewport ? h : 941 * z,
     );
     c.setZoom(z);
     c.setBounds(0, 0, 1672, 941);

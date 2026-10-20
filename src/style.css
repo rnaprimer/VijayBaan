@@ -1156,3 +1156,85 @@ footer i {
     height: 29px;
   }
 }
+
+.orientation-tip {
+  display: none;
+}
+@media (max-width: 900px) and (orientation: portrait) {
+  .playing .orientation-tip {
+    position: absolute;
+    top: 125px;
+    left: 12px;
+    right: 12px;
+    z-index: 15;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+    padding: 10px 12px;
+    border: 1px solid #e2bf7c;
+    border-radius: 8px;
+    background: #fff6e8f2;
+    color: #80582d;
+    font-size: 11px;
+    line-height: 1.4;
+    text-align: center;
+    pointer-events: none;
+  }
+  .orientation-tip span {
+    font-size: 23px;
+  }
+  .playing #message {
+    top: 187px;
+  }
+}
+@media (orientation: landscape) and (max-height: 600px),
+  (orientation: landscape) and (hover: none) and (pointer: coarse) {
+  html,
+  body {
+    width: 100%;
+    height: 100%;
+    overflow: hidden;
+    overscroll-behavior: none;
+  }
+  .masthead,
+  .game-topline,
+  .below-game,
+  .legend,
+  footer {
+    display: none;
+  }
+  main {
+    max-width: none;
+    margin: 0;
+    padding: 0;
+  }
+  .arena {
+    position: fixed;
+    inset: 0;
+    width: 100vw;
+    height: 100dvh;
+    min-height: 0;
+    max-height: none;
+    aspect-ratio: auto;
+    border: 0;
+    outline: 0;
+    border-radius: 0;
+    box-shadow: none;
+  }
+  .hud {
+    top: max(8px, env(safe-area-inset-top));
+    left: max(10px, env(safe-area-inset-left));
+    right: max(10px, env(safe-area-inset-right));
+  }
+  .aim-hint,
+  .overview {
+    display: none !important;
+  }
+  .overlay {
+    padding: max(12px, env(safe-area-inset-top))
+      max(15px, env(safe-area-inset-right))
+      max(12px, env(safe-area-inset-bottom))
+      max(15px, env(safe-area-inset-left));
+  }
+}
