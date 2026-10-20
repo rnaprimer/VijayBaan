@@ -1,7 +1,14 @@
 import Phaser from "phaser";
 import { Battlefield } from "./scene";
 import { Round, readBest, saveBest } from "./rules";
-import { copyResult, shareResult, downloadCard } from "./sharing";
+import {
+  copyResult,
+  shareResult,
+  downloadCard,
+  prepareScoreCard,
+  releaseScoreCard,
+  POSTER_ART,
+} from "./sharing";
 import "./style.css";
 import { REPLAYS } from "./replays";
 const asset = "/assets/game/";
@@ -12,7 +19,7 @@ document.querySelector<HTMLDivElement>("#app")!.innerHTML = `
 <div class="orientation-tip" role="note"><span aria-hidden="true">↻</span> Rotate your phone for the best landscape experience</div><div id="message" role="status"></div><div id="aim-hint" class="aim-hint hidden">← Pull back near the bow. Release to shoot.</div><div id="overview" class="overview hidden"><span>RAMA</span><div>● ───────── ◈</div><span>FORTRESS →</span></div>
 <div id="menu" class="overlay"><div class="welcome"><div class="eyebrow">CELEBRATE THE TRIUMPH OF GOOD</div><div class="title-ornament">✦ ─── 🏹 ─── ✦</div><h1>VIJAY <span>BAAN</span></h1><p class="subtitle">The Dussehra Arrow Challenge</p><div class="cast"><img src="${asset}characters/rama.png" alt="Shri Ram drawing his bow"><span class="versus">GOOD<br><i>vs</i><br>EVIL</span><img src="${asset}characters/ravana-heads/01.png" alt="A crowned Ravana head"></div><p class="intro">Ten heads. One fortress. Your legendary shot.</p><button class="primary" id="play">LET THE ARROWS FLY <span>➶</span></button><p class="menu-instruction">Drag back to aim · Release to shoot · Bring down the fortress</p><div class="best-line">PERSONAL BEST <b id="menu-best">${readBest().score.toLocaleString()}</b></div></div></div>
 <div id="pause-menu" class="overlay hidden"><div class="panel"><div class="eyebrow">TAKE A BREATH, HERO</div><h2>Battle paused</h2><p>Your next legendary shot can wait.</p><button id="resume" class="primary">RESUME BATTLE ➶</button><button id="restart-pause" class="secondary">Restart challenge</button><button id="pause-sound" class="secondary">Toggle sound</button><button id="return-menu" class="text-button">Return to menu</button></div></div>
-<div id="results" class="overlay hidden"><div class="panel result"><div id="result-eyebrow" class="eyebrow"></div><h2 id="result-title"></h2><p id="result-sub"></p><div id="stars" class="stars"></div><div class="final-score" id="final-score"></div><div class="result-stats" id="result-stats"></div><p class="personal" id="personal"></p><button id="again" class="primary">PLAY AGAIN ➶</button><div class="share-row"><button id="share" class="secondary">↗ Share score</button><button id="download" class="secondary">↓ Score card</button></div><button id="copy" class="text-button">Copy result</button><p id="share-status" role="status"></p></div></div>
+<div id="results" class="overlay hidden"><div class="panel result"><div class="result-summary"><div id="result-eyebrow" class="eyebrow"></div><h2 id="result-title"></h2><p id="result-sub"></p><div id="stars" class="stars"></div><div class="final-score" id="final-score"></div><div class="result-stats" id="result-stats"></div><p class="personal" id="personal"></p><button id="again" class="secondary">Play again ➶</button></div><div class="result-sharing"><div class="poster-preview"><a id="poster-link" href="${POSTER_ART}" target="_blank" rel="noopener" aria-label="View your score poster"><img id="score-poster" src="${POSTER_ART}" alt="Your score poster featuring Ram aiming at Ravana"></a><div><h3>Share your score</h3><p>Turn your shot into a challenge. Send your poster and see who can beat your score!</p></div></div><button id="share" class="primary">↗ SHARE YOUR SCORE</button><div class="share-row"><button id="download" class="secondary">↓ Download poster</button><button id="copy" class="secondary">Copy result</button></div><p id="share-status" role="status"></p></div></div></div>
 <div id="help-menu" class="overlay hidden"><div class="panel"><div class="eyebrow">A HERO’S FIELD GUIDE</div><h2>Make every arrow count.</h2><p>Press near Ram’s bow, pull backward, and release. A longer pull sends a stronger arrow. Lift your aim for a higher arc.</p><p>Aim for wooden supports to topple the fortress. Falling blocks can defeat several heads in one shot.</p><div class="help-powerups"><span>🔥 <b>Agni</b> burns nearby supports</span><span>⚡ <b>Vajra</b> pierces three objects</span><span>✦ <b>Volley</b> fires three arrows</span></div><p>Hit a magical object directly to store its ability for your next shot. Defeat all ten heads with ten arrows in 90 seconds.</p><button id="close-help" class="primary">GOT IT ➶</button></div></div></section>
 <div class="below-game"><div class="steps"><span><b>01</b> PULL TO AIM</span><i>—</i><span><b>02</b> RELEASE TO SHOOT</span><i>—</i><span><b>03</b> LET THE FORTRESS FALL</span></div><span class="landscape-note">↻ Best enjoyed in landscape</span></div>
 <div class="legend"><span class="legend-label">DIVINE POSSIBILITIES</span><div><img src="${asset}powerups/agni.png" alt=""><span><b>Agni Astra</b><small>Set supports ablaze</small></span></div><div><img src="${asset}powerups/vajra.png" alt=""><span><b>Vajra Arrow</b><small>Pierce the defenses</small></span></div><div><img src="${asset}powerups/volley.png" alt=""><span><b>Astra Volley</b><small>Triple your impact</small></span></div><p>Hit a power-up.<br>Empower your next shot.</p></div></main>
@@ -106,7 +113,26 @@ scene.onFinish = (r) => {
   $("result-stats").innerHTML =
     `<span><b>${r.heads.size}/10</b>HEADS DEFEATED</span><span><b>${Math.floor(r.seconds)}s</b>REMAINING</span><span><b>${r.arrows}</b>UNUSED ARROWS</span>`;
   $("personal").textContent = `PERSONAL BEST  ${best.score.toLocaleString()}`;
-  $("share-status").textContent = "";
+  $("share-status").textContent = "Preparing your score poster…";
+  $("share").setAttribute("disabled", "");
+  $("download").setAttribute("disabled", "");
+  ($("score-poster") as HTMLImageElement).src = POSTER_ART;
+  ($("poster-link") as HTMLAnchorElement).href = POSTER_ART;
+  void prepareScoreCard(r)
+    .then((poster) => {
+      if (currentResult !== r) return;
+      ($("score-poster") as HTMLImageElement).src = poster.url;
+      ($("poster-link") as HTMLAnchorElement).href = poster.url;
+      $("share-status").textContent = "Your score poster is ready to share.";
+      $("share").removeAttribute("disabled");
+      $("download").removeAttribute("disabled");
+    })
+    .catch(() => {
+      if (currentResult !== r) return;
+      $("share-status").textContent =
+        "Poster unavailable. You can still share or copy your score.";
+      $("share").removeAttribute("disabled");
+    });
   window.setTimeout(() => show("results", true), r.won ? 950 : 250);
 };
 function start() {
@@ -118,6 +144,7 @@ function start() {
   scene.start();
 }
 function restart(toMenu = false) {
+  releaseScoreCard();
   document.body.classList.toggle("playing", !toMenu);
   show("overview", !toMenu);
   clearTimeout(toastTimer);

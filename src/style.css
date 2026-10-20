@@ -1238,3 +1238,125 @@ footer i {
       max(15px, env(safe-area-inset-left));
   }
 }
+
+.result.panel {
+  width: 780px;
+  display: grid;
+  grid-template-columns: 1fr 1.1fr;
+  align-items: center;
+  gap: 26px;
+  padding: 27px;
+}
+.result-summary > button,
+.result-sharing > .primary {
+  width: 100%;
+  margin-top: 12px;
+}
+.result-sharing {
+  border-left: 1px solid #e3cdab;
+  padding-left: 25px;
+}
+.poster-preview img {
+  display: block;
+  width: 100%;
+  max-height: 235px;
+  object-fit: contain;
+  border: 1px solid #dfbd7f;
+  border-radius: 7px;
+  background: #fff5df;
+}
+.result-sharing h3 {
+  font:
+    26px Georgia,
+    serif;
+  color: #a33e25;
+  margin: 14px 0 7px;
+}
+.result-sharing .primary {
+  font-size: 11px;
+  letter-spacing: 1px;
+}
+.result-sharing #share-status {
+  min-height: 30px;
+  margin-top: 12px;
+  font-size: 10px;
+}
+button:disabled {
+  cursor: wait;
+  opacity: 0.65;
+  transform: none;
+}
+@media (max-width: 600px) and (orientation: portrait) {
+  .result.panel {
+    display: block;
+    padding: 22px 18px;
+  }
+  .result h2 {
+    font-size: 32px;
+  }
+  .result .final-score {
+    font-size: 36px;
+    margin: 5px 0 10px;
+  }
+  .result .stars {
+    font-size: 22px;
+  }
+  .result .personal {
+    margin: 9px 0;
+  }
+  .result-summary > button {
+    margin: 7px 0 13px;
+    padding: 9px;
+  }
+  .result-sharing {
+    padding: 14px 0 0;
+    border-left: 0;
+    border-top: 1px solid #e3cdab;
+  }
+  .poster-preview {
+    display: grid;
+    grid-template-columns: 88px 1fr;
+    align-items: center;
+    gap: 13px;
+    text-align: left;
+  }
+  .result-sharing h3 {
+    font-size: 21px;
+    margin: 0 0 6px;
+  }
+  .result-sharing p {
+    font-size: 10px;
+  }
+  .result-sharing .primary {
+    padding: 13px;
+    min-height: 43px;
+  }
+}
+@media (orientation: landscape) and (max-height: 600px) {
+  .result.panel {
+    max-width: 720px;
+    padding: 19px 23px;
+    gap: 23px;
+  }
+  .poster-preview {
+    display: grid;
+    grid-template-columns: 100px 1fr;
+    align-items: center;
+    gap: 13px;
+    text-align: left;
+  }
+  .result-sharing h3 {
+    font-size: 22px;
+    margin: 0 0 7px;
+  }
+  .result-sharing p {
+    font-size: 10px;
+  }
+  .result-sharing .primary {
+    margin-top: 15px;
+  }
+  .result .final-score {
+    font-size: 39px;
+    margin-bottom: 12px;
+  }
+}

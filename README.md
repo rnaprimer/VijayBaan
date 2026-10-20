@@ -65,6 +65,8 @@ In the development server only, append `?debug` to show colliders and replay con
 
 ### Sharing and persistence
 
+The results screen emphasizes sharing a personalized poster made from the supplied “Rama’s Glowing Arrow Against Ravana” illustration. The entire illustration is preserved above a score footer. The same generated PNG is previewed, downloaded, and attached through native file sharing when supported. Text-only and WhatsApp fallbacks explain how to download and attach the image manually. The tab icon has SVG, PNG/ICO fallbacks, and an Apple touch icon.
+
 Scores and numbers come from actual rule events. The best score, target count, and star count are stored separately and tolerate unavailable localStorage. Native sharing is attempted when supported; otherwise the result opens a WhatsApp compose URL. Cancellation is reported as cancellation. Copy and score-card download work independently. Sharing never sends a message automatically.
 
 ## Verification and limitations

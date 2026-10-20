@@ -54,3 +54,7 @@ A Site was registered as owner-private, but deployment was not completed. Automa
 ## Mobile landscape update
 
 Added an in-game portrait rotation recommendation and viewport-filling mobile landscape gameplay. The header, footer, surrounding labels, and bottom aiming hint are hidden in this mode, with safe-area spacing for the HUD. TypeScript/build, formatting, and the 22 existing tests were rerun successfully. Visual verification of this revision remains pending because automatic browser approval review blocked opening the local preview. Earlier browser screenshots document the previous layout.
+
+## Poster sharing and favicon update
+
+Added SVG/PNG/ICO favicon assets and an Apple touch icon. Added the supplied 1448×1086 poster unchanged. Results emphasize Share Your Score, preview a personalized poster, and offer download/copy fallbacks. Six new automated sharing tests cover preservation of the full artwork region and actual numeric results, native PNG file payloads, native cancellation, text-only sharing, WhatsApp composition, and reuse of the generated poster for downloads. All 28 tests pass. These new sharing tests use mocked Canvas/browser APIs; native phone sharing and visual verification of the updated results panel remain unverified.
