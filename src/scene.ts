@@ -1,3 +1,4 @@
+import { battlefieldView } from "./viewport";
 import Phaser from "phaser";
 import Matter from "matter-js";
 import { CONFIG, SPRITES, ASSET_BASE, type Ability } from "./config";
@@ -175,29 +176,17 @@ export class Battlefield extends Phaser.Scene {
     this.hud();
   }
   resize() {
-    const c = this.cameras.main,
-      w = this.scale.width,
-      h = this.scale.height;
-    const portrait = w / h < 1;
-    const immersiveLandscape = matchMedia(
-      "(orientation: landscape) and (max-height: 600px), (orientation: landscape) and (hover: none) and (pointer: coarse)",
-    ).matches;
-    const fillViewport = portrait || immersiveLandscape;
-    // Fill mobile landscape without stretching the art. Overflow is cropped while preserving the artwork’s proportions.
-    const z = portrait
-      ? h / 941
-      : immersiveLandscape
-        ? Math.max(w / 1672, h / 941)
-        : Math.min(w / 1672, h / 941);
-    c.setViewport(
-      fillViewport ? 0 : (w - 1672 * z) / 2,
-      fillViewport ? 0 : (h - 941 * z) / 2,
-      fillViewport ? w : 1672 * z,
-      fillViewport ? h : 941 * z,
+    if (this.pointerId !== null) this.cancelAim();
+    const c = this.cameras.main;
+    const view = battlefieldView(
+      this.scale.width,
+      this.scale.height,
+      matchMedia("(hover: none) and (pointer: coarse)").matches,
     );
-    c.setZoom(z);
-    c.setBounds(0, 0, 1672, 941);
-    c.centerOn(portrait ? 350 : 836, 470.5);
+    c.setViewport(view.x, view.y, view.width, view.height);
+    c.setZoom(view.zoom);
+    c.setBounds(0, 0, CONFIG.world.width, CONFIG.world.height);
+    c.centerOn(view.centerX, view.centerY);
   }
   world(p: Phaser.Input.Pointer) {
     return this.cameras.main.getWorldPoint(p.x, p.y);

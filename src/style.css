@@ -1212,8 +1212,8 @@ footer i {
   .arena {
     position: fixed;
     inset: 0;
-    width: 100vw;
-    height: 100dvh;
+    width: var(--game-viewport-width, 100vw);
+    height: var(--game-viewport-height, 100dvh);
     min-height: 0;
     max-height: none;
     aspect-ratio: auto;

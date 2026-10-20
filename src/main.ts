@@ -11,6 +11,7 @@ import {
 } from "./sharing";
 import "./style.css";
 import { REPLAYS } from "./replays";
+import { bindGameViewport } from "./viewport";
 const asset = "/assets/game/";
 document.querySelector<HTMLDivElement>("#app")!.innerHTML = `
 <header class="masthead"><a class="brand" href="./" aria-label="Vijay Baan home"><span class="brand-icon">➶</span><span>VIJAY BAAN<small>THE DUSSEHRA ARROW CHALLENGE</small></span></a><div class="header-right"><span class="edition">ONE BOW. TEN HEADS. ONE EPIC CHALLENGE.</span><button id="help" class="icon" aria-label="How to play">?</button><button id="sound" class="icon" aria-label="Toggle sound" title="Toggle sound">♪</button></div></header>
@@ -37,9 +38,9 @@ const game = new Phaser.Game({
   transparent: true,
   antialias: true,
   scale: {
-    mode: Phaser.Scale.RESIZE,
-    width: $("game").clientWidth,
-    height: $("game").clientHeight,
+    mode: Phaser.Scale.NONE,
+    width: Math.max(1, $("game").clientWidth),
+    height: Math.max(1, $("game").clientHeight),
   },
   physics: {
     default: "matter",
@@ -49,6 +50,16 @@ const game = new Phaser.Game({
   input: { activePointers: 2 },
   render: { pixelArt: false, roundPixels: false },
   fps: { target: 60 },
+});
+let stopViewport: (() => void) | undefined;
+const attachViewport = () => {
+  stopViewport = bindGameViewport($("game"), game);
+};
+if (game.isRunning) attachViewport();
+else game.events.once(Phaser.Core.Events.READY, attachViewport);
+game.events.once(Phaser.Core.Events.DESTROY, () => {
+  stopViewport?.();
+  game.events.off(Phaser.Core.Events.READY, attachViewport);
 });
 function toast(s: string) {
   $("message").textContent = s;

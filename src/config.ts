@@ -50,7 +50,12 @@ export const CONFIG = {
     arrow: 200,
   },
   stars: [5000, 6500, 8000],
-  camera: { portraitZoom: 0.78, follow: 0.045 },
+  camera: {
+    portraitZoom: 0.78,
+    follow: 0.045,
+    playerX: 350,
+    landscapeBottom: 826,
+  },
 } as const;
 export const ASSET_BASE = "/assets/game/";
 export const SPRITES: Record<string, string> = {

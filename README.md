@@ -21,7 +21,7 @@ npm run build
 
 `npm run build` performs strict TypeScript checking and creates `dist/`. Serve that directory using any static HTTPS hosting provider. The included `.openai/hosting.json` identifies the Sites deployment. The game uses no authentication SDK or backend.
 
-On phones, portrait gameplay displays an on-screen recommendation to rotate to landscape. Mobile landscape fills the available viewport with the battlefield and HUD; the page header, footer, and surrounding instruction text are hidden. The artwork keeps its proportions, and HUD controls respect device safe areas.
+On phones, portrait gameplay displays an on-screen recommendation to rotate to landscape. Mobile rotation and browser address-bar changes resynchronize CSS dimensions, the canvas, renderer, camera, and pointer bounds without restarting the round. Mobile landscape fills the available viewport with the battlefield and HUD; the page header, footer, and surrounding instruction text are hidden. The artwork keeps its proportions, and HUD controls respect device safe areas.
 
 ## Rules
 
@@ -32,6 +32,7 @@ Directly strike the flame vessel, crystal, or golden Astra object to store Agni,
 ## Source map
 
 - `src/config.ts`: authoritative rules, materials, weapons, camera settings, scoring, and asset manifest.
+- `src/viewport.ts`: container/visual-viewport observation, deferred rotation synchronization, canvas sizing, pointer bounds, and camera framing.
 - `src/layout.ts`: deterministic fortress and independent terrain colliders; the river gap has no floor.
 - `src/physics.ts`: Matter bodies, materials, world construction, and projectiles.
 - `src/rules.ts`: shot state machine, scoring, ammunition, timer, local best, and pure trajectory/impact calculations.
